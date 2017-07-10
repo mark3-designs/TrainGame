@@ -90,20 +90,32 @@ public class Game extends Canvas implements Runnable, CommandLineRunner {
 		double ns = 1000000000 / amountOfTicks;
 		double delta = 0;
 		long timer = System.currentTimeMillis();
-		while(isRunning){
-			long now = System.nanoTime();
-			delta += (now - lastTime) / ns;
-			lastTime = now;
-			while(delta >= 1){
-				tick();
-				delta--;
-			}
-			render();
-			
-			if(System.currentTimeMillis() - timer > 1000){
-				timer += 1000;
-			}
-		}
+		
+		Level level= new Level(player, handler);
+        handler.addObject(player);
+		    
+		do {
+		    
+		    while(isRunning) {
+			    long now = System.nanoTime();
+			    delta += (now - lastTime) / ns;
+			    lastTime = now;
+			    while(delta >= 1){
+				    tick();
+				    delta--;
+			    }
+			    render();
+    			
+			    if(System.currentTimeMillis() - timer > 1000){
+				    timer += 1000;
+			    }
+		    }
+		    
+		    level= level.getNextLevel();
+		    // todo.. have to reset the player position
+		    
+		} while (level != null);
+		
 		stop();		
 	}
 	
@@ -185,43 +197,6 @@ public class Game extends Canvas implements Runnable, CommandLineRunner {
 		}
 	}
 	
-	public void createLevel(){
-		for(int xx=0; xx<132; xx++){
-			for(int yy=0; yy<4; yy++){
-				
-				Random rand = new Random();
-				int s=rand.nextInt(5);
-				if(s==0){
-					
-					int s2=rand.nextInt(100);
-					
-					GameObjects o = new Rock(xx*96+32, yy*96+232, ID.rock);
-					handler.addObject(o);
-					
-					if(s2==0){
-						o.setType(2);
-					}else{
-						o.setType(1);	
-					}
-					
-				}else if(s==1){
-	
-					int s2=rand.nextInt(200);
-					
-					GameObjects o = new Rock(xx*96+32, yy*96+232, ID.rock);
-					handler.addObject(o);
-					
-					if(s2==0){
-						o.setType(-2);
-					}else{
-						o.setType(-1);	
-					}
-				}
-			}
-		}
-		
-		handler.addObject(player);
-	}
 	
 	
 	public static void main(String args[]){
@@ -256,6 +231,20 @@ public class Game extends Canvas implements Runnable, CommandLineRunner {
 	// This is the entry point of the Spring Boot Application - Command Line Runner
     @Override
     public void run(String... arg0) throws Exception {
+        
+        
+        
+        Menu menu= new Menu(WIDTH, HEIGHT, "Train Game");
+        Menu.MenuItem item= menu.getSelection();
+        
+        switch (item) {
+        case PLAY:
+            break;
+        case QUIT:
+            System.exit(0);
+            break;
+        }
+        
         new Window(WIDTH, HEIGHT, "Train Game", this);
         Assets.init();
         player = new MineCart(0, 530, ID.mineCart, handler, this);
@@ -267,13 +256,13 @@ public class Game extends Canvas implements Runnable, CommandLineRunner {
         this.addMouseMotionListener(mouseInput);
           
         
-        createLevel();
         
         banjo.setVol(-12f);
         banjo.loop();
         ambientCave.setVol(5f);
         ambientCave.loop();
         trackSound.setVol(4f);
+        
         
         start();
         
