@@ -34,9 +34,9 @@ public class Game implements CommandLineRunner {
     @Override
     public void run(String... arg0) throws Exception {
         MineCart player=  new MineCart(0, 530, ID.mineCart, controller);
-        GameModel game= new GameModel();
+        GameModel game= new GameModel(player);
        
-        view.init(game.createLevel(player));
+        view.init(game.createLevel());
         
         controller.start(player);
         

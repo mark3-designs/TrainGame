@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public class Rock extends GameObjects{
+public class Rock extends GameItemBase{
 
 	private int width=64, height=64;
 	

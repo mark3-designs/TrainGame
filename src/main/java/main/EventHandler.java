@@ -5,42 +5,40 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import main.objects.GameObjects;
+import main.objects.GameItemBase;
 import main.objects.ID;
+import main.objects.MineCart;
 
 public class EventHandler {
 	//tick and render all objects
 
     // member variables should generally all be private to promote encapsulation
-	private LinkedList<GameObjects> object = new LinkedList<GameObjects>();
+	private LinkedList<GameItemBase> object = new LinkedList<GameItemBase>();
 	private boolean move = false, brake = false;
 	
 	private boolean levelComplete= false;
+    private MineCart player;
+    private Level level;
 	
 		
-	public EventHandler(){ }
+	public EventHandler(MineCart player, Level level){
+	    this.player= player;
+	    this.level= level;
+	}
 		
-	public void tick(GameObjects tempObject, Rectangle screen){
+	public void tick(GameItemBase tempObject, Rectangle screen){
 			
 			if(tempObject.getBounds().intersects(screen)){
-				
-			    // there is no difference between the if() and the else()
-				//if(tempObject.getId()==ID.rock && tempObject.getType()!=0){
-					tempObject.tick();
-				//} 
-				//else{
-				//	tempObject.tick();
-				//}
-				
-			}else{
-				if(tempObject.getId()==ID.mineCart){
+			    if (tempObject == player && !brake) {
+			        tempObject.tick();
+			    }
+			}else if (tempObject == player) {
 					tempObject.setType(-1);    // brad: figure out why the type is getting set to -1 and what that means.
 					tempObject.tick();
 					// see if we've past the end of the level.
 					if (tempObject.getX() > screen.x + screen.width) {
 					    levelComplete= true;
 					}
-				}
 			}
 	}
 	
@@ -48,17 +46,17 @@ public class EventHandler {
 	 * Returns a read-only copy of the internal list of objects being tracked by this handler
 	 * @return
 	 */
-	public List<GameObjects> getObjects() {
+	public List<GameItemBase> getObjects() {
         return Collections.unmodifiableList(object);
     }
 		
 
 	
-	public void addObject(GameObjects tempObject){
+	public void addObject(GameItemBase tempObject){
 		object.add(tempObject);
 	}
 	
-	public void removeObject(GameObjects tempObject){
+	public void removeObject(GameItemBase tempObject){
 		object.remove(tempObject);
 	}
 
@@ -78,9 +76,8 @@ public class EventHandler {
 		this.brake = brake;
 	}
 
-
-	public boolean isComplete() {
-	    return levelComplete;
-	}
-		
+	public boolean isComplete() { return levelComplete; }
+	public MineCart getPlayer() { return player; }
+	public Level getLevel() { return level; }
+	
 }

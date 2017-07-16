@@ -2,13 +2,13 @@ package main.objects;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public abstract class GameObjects {
+public abstract class GameItemBase {
 
 	protected int type, x, y;
 	protected float velX = 0, velY = 0;
 	protected ID id;
 	
-	public GameObjects(int x, int y, ID id){
+	public GameItemBase(int x, int y, ID id){
 		this.x = x;
 		this.y = y;
 		this.id = id;

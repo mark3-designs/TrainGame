@@ -11,7 +11,7 @@ import main.GameView;
 import main.PlayerModel;
 import main.gfx.Camera;
 import main.objects.ID;
-import main.objects.GameObjects;
+import main.objects.GameItemBase;
 import main.objects.MineCart;
 
 public class MouseInput extends MouseAdapter{
@@ -45,7 +45,7 @@ public class MouseInput extends MouseAdapter{
 		
 		if(game.getPlayer().getType()<0) return;
 		
-		for (GameObjects tempObject : handler.getObjects()) {
+		for (GameItemBase tempObject : handler.getObjects()) {
 			
 			Rectangle r = new Rectangle(mx-16, my-8, 32, 32);
 			

@@ -1,6 +1,6 @@
 package main.gfx;
 
-import main.objects.GameObjects;
+import main.objects.GameItemBase;
 
 public class Camera {
 
@@ -11,7 +11,7 @@ public class Camera {
 		this.y = y;
 	}
 	
-	public void tick(GameObjects object){
+	public void tick(GameItemBase object){
 		
 		x += ((object.getX() - (x-150)) - 800/2) * 0.05f;
 		y += ((object.getY() - (y+50)) - 600/2) * 0.05f;

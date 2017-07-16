@@ -2,18 +2,27 @@ package main;
 
 import java.util.Random;
 
-import main.objects.GameObjects;
+import main.objects.GameItemBase;
 import main.objects.ID;
 import main.objects.MineCart;
 import main.objects.Rock;
 
 public class GameModel {
 
-    public GameModel() { }
+    private MineCart player;
+    private Level level;
     
-    public Level createLevel(MineCart player){
+    public GameModel(MineCart player) {
+        this.player= player;
+    }
+    
+    public Level createLevel(){
         
-        Level level= new Level();
+        if (this.level == null) {
+            this.level= new Level(player);
+        } else {
+            this.level= level.getNextLevel();
+        }
         
         EventHandler handler= level.getHandler();
         
@@ -22,11 +31,12 @@ public class GameModel {
                 
                 Random rand = new Random();
                 int s=rand.nextInt(5);
+                
                 if(s==0){
                     
                     int s2=rand.nextInt(100);
                     
-                    GameObjects o = new Rock(xx*96+32, yy*96+232, ID.rock);
+                    GameItemBase o = new Rock(xx*96+32, yy*96+232, ID.rock);
                     handler.addObject(o);
                     
                     if(s2==0){
@@ -39,7 +49,7 @@ public class GameModel {
     
                     int s2=rand.nextInt(200);
                     
-                    GameObjects o = new Rock(xx*96+32, yy*96+232, ID.rock);
+                    GameItemBase o = new Rock(xx*96+32, yy*96+232, ID.rock);
                     handler.addObject(o);
                     
                     if(s2==0){

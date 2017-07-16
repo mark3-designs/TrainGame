@@ -1,5 +1,7 @@
 package main;
 
+import main.objects.MineCart;
+
 
 /**
  * Represents a level in the game
@@ -11,15 +13,16 @@ public class Level implements Comparable<Level> {
     private int value;
     
     private EventHandler handler;
+    private MineCart player;
     
-    public Level() {
-        handler= new EventHandler();
+    public Level(MineCart player) {
         this.value= 1;  // the first level
+        this.player= player;
     }
     
-    private Level(int value) {
-        handler= new EventHandler();
+    private Level(int value, MineCart player) {
         this.value= Math.abs(value);    // don't allow levels < 0
+        this.player= player;
     }
 
     public int getValue() {
@@ -42,10 +45,14 @@ public class Level implements Comparable<Level> {
     }
     
     public Level getNextLevel() {
-        return new Level(value + 1);
+        return new Level(value + 1, player);
     }
     
     public EventHandler getHandler() {
+        if (handler == null) {
+            return (handler= handler= new EventHandler(player, this));
+        } 
+        
         return handler;
     }
 }

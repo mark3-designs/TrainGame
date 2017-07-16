@@ -10,7 +10,7 @@ import main.PlayerModel;
 import main.gfx.Animation;
 import main.gfx.Assets;
 
-public class MineCart extends GameObjects{
+public class MineCart extends GameItemBase{
 
 	Animation move = new Animation(110 ,Assets.mineCart);
 	

@@ -17,9 +17,9 @@ import org.springframework.stereotype.Component;
 import main.gfx.Assets;
 import main.gfx.Camera;
 import main.gfx.Font;
-import main.input.KeyInput;
+import main.input.Keyboard;
 import main.input.MouseInput;
-import main.objects.GameObjects;
+import main.objects.GameItemBase;
 import main.objects.MineCart;
 
 @EnableAutoConfiguration
@@ -55,7 +55,7 @@ public class GameView extends Canvas implements Runnable {
         window.add(this);
 	    window.setVisible(true);
 
-        this.addKeyListener(new KeyInput(level.getHandler()));
+        this.addKeyListener(new Keyboard(level.getHandler()));
         mouseInput = new MouseInput(level.getHandler(), camera, game);
         this.addMouseListener(mouseInput);
         this.addMouseMotionListener(mouseInput);
@@ -71,10 +71,10 @@ public class GameView extends Canvas implements Runnable {
 	}
 	
 	
-	public void render(List<GameObjects> object, Graphics g){
+	public void render(List<GameItemBase> object, Graphics g){
 	    
 	    for(int i = 0; i < object.size(); i++){
-	        GameObjects tempObject = object.get(i);
+	        GameItemBase tempObject = object.get(i);
 
 	        Rectangle screen = new Rectangle((int)camera.getX(), (int)camera.getY(), windowWidth, windowHeight);
 	            
@@ -92,6 +92,7 @@ public class GameView extends Canvas implements Runnable {
 			
         if(player.getModel().isDead()){
             player.setType(-1);
+            return;
         }
         
         // newer for loop structure (as of about Java6)
@@ -103,7 +104,7 @@ public class GameView extends Canvas implements Runnable {
         camera.tick(player);    // this line replaces the above loop (i think) ... brad 2017-07-11
         
         // brad: i can't decide what to do with the below:
-        for (GameObjects obj : level.getHandler().getObjects()) {
+        for (GameItemBase obj : level.getHandler().getObjects()) {
 		    Rectangle screen = new Rectangle((int)camera.getX(), (int)camera.getY(), windowHeight, windowWidth);
             level.getHandler().tick(obj, screen);
         }
